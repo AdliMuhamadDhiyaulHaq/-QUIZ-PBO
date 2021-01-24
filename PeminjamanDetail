@@ -1,0 +1,41 @@
+Public Class Peminjaman_Detail
+    Private Sub ClearEntry()
+        txtIdpinjam.Text = ""
+        txtkodepetugas.Text = ""
+        txtnamaanggota.Text = ""
+    End Sub
+    Private Sub Reload()
+        oPinDet.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub SimpanPeminjamandetail()
+        oPinDet.idpinjam = txtIdpinjam.Text
+        oPinDet.kode_petugas = txtkodepetugas.Text
+        oPinDet.nama_anggota = txtnamaanggota.Text
+        PEMINJAMANDETAIL_baru = True
+        oPinDet.Simpan()
+        ClearEntry()
+        Reload()
+    End Sub
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        SimpanPeminjamandetail()
+        txtIdpinjam.Focus()
+    End Sub
+    Private Sub Detail_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        txtkodepetugas.Text = kodePet
+
+    End Sub
+
+    Private Sub txtidpinjam_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtIdpinjam.KeyDown
+        If (e.KeyCode = Keys.Enter And txtIdpinjam.Text <> "") Then
+            oPinDet.CariPEMINJAMAN(txtIdpinjam.Text)
+            txtkodepetugas.Text = oPinDet.kode_petugas
+            txtkodepetugas.Text = oPinDet.kode_petugas
+            txtnamaanggota.Text = oPinDet.total_pinjam
+        End If
+    End Sub
+End Class
