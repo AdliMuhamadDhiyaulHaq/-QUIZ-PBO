@@ -1,0 +1,75 @@
+Public Class frmanggota
+    Private Sub TampilAnggota()
+        txtidanggota.Text = oAnggota.idanggota
+        txtnamaanggota.Text = oAnggota.nama_anggota
+        txtalamat.Text = oAnggota.alamat_anggota
+        txtnomortelepon.Text = oAnggota.nomor_telepon
+        oAnggota.CariNAMA_ANGGOTA(txtidanggota.Text)
+        If (Anggota_baru = False) Then
+            TampilAnggota()
+            GetData()
+        End If
+    End Sub
+    Private Sub reload()
+        GetData()
+    End Sub
+
+    Private Sub SimpanAnggota()
+        Anggota_baru = True
+        oAnggota.idanggota = txtidanggota.Text
+        oAnggota.nama_anggota = txtnamaanggota.Text
+        oAnggota.alamat_anggota = txtalamat.Text
+        oAnggota.nomor_telepon = txtnomortelepon.Text
+        oAnggota.Simpan()
+    End Sub
+
+    Private Sub ClearEntry()
+        txtidanggota.Text = ""
+        txtnamaanggota.Text = ""
+        txtalamat.Text = ""
+        txtnomortelepon.Text = ""
+        DataGridView1.DataSource = ""
+        reload()
+    End Sub
+    Private Sub GetData()
+        oAnggota.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        reload()
+    End Sub
+
+    Private Sub txtidanggota_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtidanggota.KeyDown
+        If (e.KeyCode = Keys.Enter And txtidanggota.Text <> "") Then
+            oAnggota.CariNAMA_ANGGOTA(txtidanggota.Text)
+            If (Anggota_baru = True) Then
+                txtidanggota.Focus()
+            Else
+                TampilAnggota()
+            End If
+        End If
+    End Sub
+
+    Private Sub txtnamaanggota_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtnamaanggota.KeyDown
+        If (e.KeyCode = Keys.Enter And txtnamaanggota.Text <> "") Then
+            oAnggota.CariNAMA_ANGGOTA(txtnamaanggota.Text)
+            If (Anggota_baru = False) Then
+                TampilAnggota()
+            Else
+                MessageBox.Show("Data tidak ditemukan")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GetData()
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SimpanAnggota()
+    End Sub
+
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        ClearEntry()
+    End Sub
+End Class
