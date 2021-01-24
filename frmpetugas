@@ -1,0 +1,78 @@
+Public Class frmpetugas
+    Private Sub TampilPetugas()
+        txtkodepetugas.Text = oPetugas.kode_petugas
+        txtnamapetugas.Text = oPetugas.nama_petugas
+        txtpassword.Text = oPetugas.password
+        txtstatus.Text = oPetugas.status
+        oPetugas.CariNAMA_PETUGAS(txtkodepetugas.Text)
+        If (Petugas_baru = False) Then
+            TampilPetugas()
+            GetData()
+        End If
+    End Sub
+    Private Sub reload()
+        GetData()
+    End Sub
+
+    Private Sub SimpanPetugas()
+        Petugas_baru = True
+        oPetugas.kode_petugas = txtkodepetugas.Text
+        oPetugas.nama_petugas = txtnamapetugas.Text
+        oPetugas.password = txtpassword.Text
+        oPetugas.status = txtstatus.Text
+        oPetugas.Simpan()
+
+    End Sub
+
+    Private Sub ClearEntry()
+        txtkodepetugas.Text = ""
+        txtnamapetugas.Text = ""
+        txtpassword.Text = ""
+        txtstatus.Text = ""
+        DataGridView1.DataSource = ""
+        reload()
+    End Sub
+    Private Sub GetData()
+        oPetugas.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        reload()
+    End Sub
+
+    Private Sub txtkodepetugas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtkodepetugas.KeyDown
+        If (e.KeyCode = Keys.Enter And txtkodepetugas.Text <> "") Then
+            oPetugas.CariNAMA_PETUGAS(txtkodepetugas.Text)
+            If (Petugas_baru = True) Then
+                txtkodepetugas.Focus()
+            Else
+                TampilPetugas()
+            End If
+        End If
+    End Sub
+
+    Private Sub txtnamapetugas_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtnamapetugas.KeyDown
+        If (e.KeyCode = Keys.Enter And txtnamapetugas.Text <> "") Then
+            oPetugas.CariNAMA_PETUGAS(txtnamapetugas.Text)
+            If (Petugas_baru = False) Then
+                TampilPetugas()
+            Else
+                MessageBox.Show("Data tidak ditemukan")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GetData()
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SimpanPetugas()
+    End Sub
+
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        ClearEntry()
+    End Sub
+
+    
+End Class
