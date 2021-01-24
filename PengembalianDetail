@@ -1,0 +1,41 @@
+Public Class PengembalianDetail
+
+    Private Sub ClearEntry()
+        txtnomorbuku.Text = ""
+        txtJudul.Text = ""
+        txtTotal.Text = ""
+    End Sub
+    Private Sub Reload()
+        oPdetail.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub SimpanPengembaliandetail()
+        oPdetail.nomor_buku = txtnomorbuku.Text
+        oPdetail.judul_buku = txtJudul.Text
+        oPdetail.total_pengembalian = txtTotal.Text
+        PENGEMBALIANDETAIL_baru = True
+        oPdetail.Simpan()
+        ClearEntry()
+        Reload()
+    End Sub
+    Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
+        Me.Close()
+    End Sub
+
+    Private Sub btnAdd_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAdd.Click
+        SimpanPengembaliandetail()
+        txtnomorbuku.Focus()
+    End Sub
+    Private Sub Detail_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        txtJudul.Text = Jbukku
+
+    End Sub
+
+    Private Sub txtJudul_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtJudul.KeyDown
+        If (e.KeyCode = Keys.Enter And txtJudul.Text <> "") Then
+            oPdetail.CariPENGEMBALIANDETAIL(txtJudul.Text)
+            txtTotal.Text = oPdetail.total_pengembalian
+            txtJudul.Text = oPdetail.judul_buku
+        End If
+    End Sub
+End Class
