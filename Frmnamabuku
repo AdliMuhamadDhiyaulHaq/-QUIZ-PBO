@@ -1,0 +1,83 @@
+Public Class frmnamabuku
+    Private Sub TampilBuku()
+        txtidbuku.Text = oBuku.idbuku
+        txtnomorbuku.Text = oBuku.nomor_buku
+        txtjudulbuku.Text = oBuku.judul
+        txtkategori.Text = oBuku.kategori
+        txtpengarang.Text = oBuku.pengarang
+        txtpenerbit.Text = oBuku.penerbit
+        oBuku.CariNAMA_BUKU(txtidbuku.Text)
+        If (Buku_baru = False) Then
+            TampilBuku()
+            GetData()
+        End If
+    End Sub
+    Private Sub reload()
+        GetData()
+    End Sub
+
+    Private Sub SimpanBuku()
+        Buku_baru = True
+        oBuku.idbuku = txtidbuku.Text
+        oBuku.nomor_buku = txtnomorbuku.Text
+        oBuku.judul = txtjudulbuku.Text
+        oBuku.kategori = txtkategori.Text
+        oBuku.pengarang = txtpengarang.Text
+        oBuku.penerbit = txtpenerbit.Text
+        oBuku.Simpan()
+
+    End Sub
+
+    Private Sub ClearEntry()
+        txtidbuku.Text = ""
+        txtnomorbuku.Text = ""
+        txtjudulbuku.Text = ""
+        txtkategori.Text = ""
+        txtpengarang.Text = ""
+        txtpenerbit.Text = ""
+        DataGridView1.DataSource = ""
+        reload()
+    End Sub
+    Private Sub GetData()
+        oBuku.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        reload()
+    End Sub
+
+    Private Sub txtidbuku_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtidbuku.KeyDown
+        If (e.KeyCode = Keys.Enter And txtidbuku.Text <> "") Then
+            oBuku.CariNAMA_BUKU(txtidbuku.Text)
+            If (Buku_baru = True) Then
+                txtidbuku.Focus()
+            Else
+                TampilBuku()
+            End If
+        End If
+    End Sub
+
+    Private Sub txtnomorbuku_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtnomorbuku.KeyDown
+        If (e.KeyCode = Keys.Enter And txtnomorbuku.Text <> "") Then
+            oBuku.CariNAMA_BUKU(txtnomorbuku.Text)
+            If (Buku_baru = False) Then
+                TampilBuku()
+            Else
+                MessageBox.Show("Data tidak ditemukan")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GetData()
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SimpanBuku()
+    End Sub
+
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        ClearEntry()
+    End Sub
+
+End Class
