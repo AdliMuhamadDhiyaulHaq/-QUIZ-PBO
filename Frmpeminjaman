@@ -1,0 +1,93 @@
+Public Class frmpeminjaman
+    Private Sub TampilPeminjaman()
+        txtidpinjam.Text = oPinjam.idpinjam
+        txttanggal.Text = oPinjam.tanggal_pinjam
+        txttotal.Text = oPinjam.total_pinjam
+        txtnomorbuku.Text = oPinjam.nomor_buku
+        txtjudul.Text = oPinjam.judul
+        txtnomoranggota.Text = oPinjam.nomor_anggota
+        txtnamaanggota.Text = oPinjam.nomor_anggota
+        txtkodepetugas.Text = oPinjam.kode_petugas
+        txtnamapetugas.Text = oPinjam.nama_petugas
+        oPinjam.CariPEMINJAMAN(txtidpinjam.Text)
+        If (Pinjam_baru = False) Then
+            TampilPeminjaman()
+            GetData()
+        End If
+    End Sub
+    Private Sub reload()
+        GetData()
+    End Sub
+
+    Private Sub SimpanPeminjaman()
+        Pinjam_baru = True
+        oPinjam.idpinjam = txtidpinjam.Text
+        oPinjam.tanggal_pinjam = txttanggal.Text
+        oPinjam.total_pinjam = txttotal.Text
+        oPinjam.nomor_buku = txtnomorbuku.Text
+        oPinjam.judul = txtjudul.Text
+        oPinjam.nomor_anggota = txtnomoranggota.Text
+        oPinjam.nama_anggota = txtnamaanggota.Text
+        oPinjam.kode_petugas = txtkodepetugas.Text
+        oPinjam.nama_petugas = txtnamapetugas.Text
+        oPinjam.Simpan()
+    End Sub
+
+    Private Sub ClearEntry()
+        txtidpinjam.Text = ""
+        txttanggal.Text = ""
+        txttotal.Text = ""
+        txtnomorbuku.Text = ""
+        txtjudul.Text = ""
+        txtnomoranggota.Text = ""
+        txtnamaanggota.Text = ""
+        txtkodepetugas.Text = ""
+        txtnamapetugas.Text = ""
+        DataGridView1.DataSource = ""
+        reload()
+    End Sub
+    Private Sub GetData()
+        oPinjam.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        reload()
+    End Sub
+
+    Private Sub txtidpinjam_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtidpinjam.KeyDown
+        If (e.KeyCode = Keys.Enter And txtidpinjam.Text <> "") Then
+            oPinjam.CariPEMINJAMAN(txtidpinjam.Text)
+            If (Pinjam_baru = True) Then
+                txtidpinjam.Focus()
+            Else
+                TampilPeminjaman()
+            End If
+        End If
+    End Sub
+
+    Private Sub txttanggal_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txttanggal.KeyDown
+        If (e.KeyCode = Keys.Enter And txttanggal.Text <> "") Then
+            oPinjam.CariPEMINJAMAN(txttanggal.Text)
+            If (Pinjam_baru = False) Then
+                TampilPeminjaman()
+            Else
+                MessageBox.Show("Data tidak ditemukan")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GetData()
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SimpanPeminjaman()
+        Peminjaman_Detail.ShowDialog()
+
+    End Sub
+
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        ClearEntry()
+    End Sub
+
+End Class
