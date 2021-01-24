@@ -1,0 +1,83 @@
+Public Class frmpengembalian
+    Private Sub TampilPengembalian()
+        txtnomorkembali.Text = oKembali.nomor_kembali
+        txtTanggal.Text = oKembali.tanggal_kembali
+        txtnomorbuku.Text = oKembali.nomor_buku
+        txtJudul.Text = oKembali.judul_buku
+        txtTotal.Text = oKembali.total_kembali
+        txtdenda.Text = oKembali.denda
+        oKembali.CariPENGEMBALIANBUKU(txtnomorkembali.Text)
+        If (PENGEMBALIANBUKU_baru = True) Then
+            TampilPengembalian()
+            GetData()
+        End If
+    End Sub
+    Private Sub reload()
+        GetData()
+    End Sub
+
+    Private Sub SimpanPengembalian()
+        PENGEMBALIANBUKU_baru = True
+        oKembali.nomor_kembali = txtnomorkembali.Text
+        oKembali.tanggal_kembali = txtTanggal.Text
+        oKembali.nomor_buku = txtnomorbuku.Text
+        oKembali.judul_buku = txtJudul.Text
+        oKembali.total_kembali = txtTotal.Text
+        oKembali.denda = txtdenda.Text
+        oKembali.Simpan()
+    End Sub
+
+    Private Sub ClearEntry()
+        txtnomorkembali.Text = ""
+        txttanggal.Text = ""
+        txtnomorbuku.Text = ""
+        txtJudul.Text = ""
+        txtTotal.Text = ""
+        txtdenda.Text = ""
+        DataGridView1.DataSource = ""
+        reload()
+    End Sub
+    Private Sub GetData()
+        oKembali.getAllData(DataGridView1)
+    End Sub
+
+    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        reload()
+    End Sub
+
+    Private Sub txtnomorkembali_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtnomorkembali.KeyDown
+        If (e.KeyCode = Keys.Enter And txtnomorkembali.Text <> "") Then
+            oKembali.CariPENGEMBALIANBUKU(txtnomorkembali.Text)
+            If (PENGEMBALIANBUKU_baru = True) Then
+                txtnomorkembali.Focus()
+            Else
+                TampilPengembalian()
+            End If
+        End If
+    End Sub
+
+    Private Sub txttanggal_KeyDown(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles txtTanggal.KeyDown
+        If (e.KeyCode = Keys.Enter And txttanggal.Text <> "") Then
+            oKembali.CariPENGEMBALIANBUKU(txtTanggal.Text)
+            If (Pinjam_baru = False) Then
+                TampilPengembalian()
+            Else
+                MessageBox.Show("Data tidak ditemukan")
+            End If
+        End If
+    End Sub
+
+    Private Sub btnrefresh_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefresh.Click
+        GetData()
+    End Sub
+
+    Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
+        SimpanPengembalian()
+        PengembalianDetail.ShowDialog()
+    End Sub
+
+    Private Sub btnClear_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClear.Click
+        ClearEntry()
+    End Sub
+
+End Class
